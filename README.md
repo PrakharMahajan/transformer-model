@@ -26,8 +26,35 @@ Here's a step-by-step description of the BERT model:
 BERT's major advantages are its ability to capture bidirectional context, handle out-of-vocabulary words, and transfer knowledge through fine-tuning. It has been widely adopted and has led to significant advancements in a wide range of NLP applications.
 
 ## Code Description
+1. Importing the necessary libraries: The code starts by importing the required libraries, including pandas, scikit-learn, tqdm, and transformers.
 
+2. Loading and preprocessing the dataset: The script reads the IMDB movie review dataset from a CSV file and converts the sentiment labels from "positive" and "negative" to binary values (1 and 0, respectively). It then splits the dataset into training and testing sets.
 
+3. Tokenization: The script uses the BERT tokenizer from the transformers library to tokenize the movie review sentences. It iterates over the sentences and encodes them using the tokenizer, adding special tokens such as "[CLS]" and "[SEP]". The encoded sentences are stored in the `input_ids` list.
+
+4. Padding: The script pads the input tokens with zeros to ensure they have the same length. It uses the `pad_sequences` function from the Keras library to perform padding.
+
+5. Creating attention masks: The script creates attention masks for the input sentences. The attention mask is a binary tensor that indicates which tokens should be attended to (1) and which should be ignored (0). It iterates over the padded input tokens and sets the attention mask value to 0 for padding tokens and 1 for real tokens. The attention masks are stored in the `attention_masks` list.
+
+6. Splitting the data: The script splits the input tokens, attention masks, and labels into training and validation sets using the `train_test_split` function from scikit-learn.
+
+7. Converting data to tensors: The script converts the training and validation inputs, masks, and labels to PyTorch tensors.
+
+8. Creating data loaders: The script creates data loaders to load the training and validation data in batches during training. It uses the `TensorDataset`, `DataLoader`, `RandomSampler`, and `SequentialSampler` classes from the PyTorch library.
+
+9. Setting up the BERT model: The script loads the BERT model for sequence classification (`BertForSequenceClassification`) from the transformers library. It configures the model to use the "bert-base-uncased" pre-trained model and sets the number of output labels to 2 (positive and negative). The model is moved to the GPU if available.
+
+10. Setting up the optimizer and scheduler: The script sets up the AdamW optimizer and a linear learning rate scheduler using the `get_linear_schedule_with_warmup` function from transformers.
+
+11. Training the model: The script enters a training loop where it trains the BERT model on the training data. It iterates over the training data batches, performs a forward pass through the model, calculates the loss, computes gradients, updates model parameters, and adjusts the learning rate. It also measures the average training loss and reports it after each epoch.
+
+12. Evaluating the model: After each training epoch, the script evaluates the model on the validation data. It calculates the accuracy of the model's predictions and reports it.
+
+13. Testing the model: Finally, the script loads the test dataset, tokenizes the test sentences, and evaluates the model on the test data, reporting the accuracy.
+
+Overall, the script demonstrates the process of using the BERT model for sentiment analysis on the IMDB movie review dataset, including data preprocessing, tokenization, model training, and evaluation.
+
+### Remarks
 This is a clone of transformers model taken from - "https://www.kaggle.com/code/samarthsarin/bert-with-transformers".
 
 Dataset available here - https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews
